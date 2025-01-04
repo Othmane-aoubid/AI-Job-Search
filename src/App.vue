@@ -9,7 +9,7 @@
         <!-- Toggle button for larger screens -->
         <button
           @click="toggleSidebar"
-          class="hidden lg:block fixed top-4 left-4 z-40 bg-gray-800 text-white p-2 rounded-md shadow-lg"
+          class="hidden lg:block fixed lg:top-2 top-4 left-4 z-40 bg-gray-800 text-white p-2 rounded-md shadow-lg"
           aria-label="Toggle sidebar (Desktop)"
         >
           <svg
@@ -59,7 +59,7 @@
             >
               <!-- Left: Search bar -->
               <div class="flex items-center flex-1">
-                <div class="relative w-full max-w-sm">
+                <div class="relative w-full max-w-sm lg:ml-10">
                   <input
                     type="text"
                     class="w-full border border-gray-300 rounded-lg p-2 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
