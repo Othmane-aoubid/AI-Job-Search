@@ -8,7 +8,7 @@
 
         <!-- Toggle button for larger screens -->
         <button
-          @click="toggleSidebar('desktop')"
+          @click="toggleSidebar"
           class="hidden lg:block fixed top-4 left-4 z-40 bg-gray-800 text-white p-2 rounded-md shadow-lg"
           aria-label="Toggle sidebar (Desktop)"
         >
@@ -30,7 +30,7 @@
 
         <!-- Toggle button for mobile -->
         <button
-          @click="toggleSidebar('mobile')"
+          @click="toggleSidebar"
           class="fixed top-2 left-2 z-50 lg:hidden bg-gray-800 text-white p-2 rounded-md"
           aria-label="Toggle sidebar (Mobile)"
         >
@@ -148,7 +148,7 @@
             </div>
           </nav>
           <div
-            :class="[ 'p-4 transition-all duration-300 ease-in-out', 'lg:pl-4' ]"
+            :class="['p-4 transition-all duration-300 ease-in-out', 'lg:pl-4']"
           >
             <router-view />
           </div>
@@ -168,14 +168,12 @@ import Sidebar from "./components/dashboard/Sidebar.vue";
 
 const route = useRoute();
 const showSidebar = ref(false);
-const toggleSource = ref(""); // Track the toggle source (mobile or desktop)
 const showProfileMenu = ref(false); // Track profile menu visibility
 
 // Function to toggle the sidebar visibility
-const toggleSidebar = (source) => {
-  toggleSource.value = source; // Update the source of the toggle
+const toggleSidebar = () => {
   showSidebar.value = !showSidebar.value;
-  console.log(`Sidebar toggled from: ${source}`); // Debugging
+  console.log(`Sidebar toggled: ${showSidebar.value ? "open" : "closed"}`); // Debugging
 };
 
 // Function to toggle the profile menu visibility
