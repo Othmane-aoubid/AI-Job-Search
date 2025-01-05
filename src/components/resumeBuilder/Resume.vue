@@ -1,11 +1,23 @@
 <template>
   <div class="resume-builder">
-    <template-gallery @template-selected="onTemplateSelected" />
-    <live-preview
-      v-if="selectedTemplate && !isEditing"
-      :selectedTemplate="selectedTemplate"
-      :resumeData="resumeData"
+    <template-gallery
+      v-if="!isEditing"
+      @template-selected="onTemplateSelected"
     />
+
+    <ClassicTemplate
+      v-if="selectedTemplate === 'ClassicTemplate' && !isEditing"
+    />
+    <ModernTemplate
+      v-if="selectedTemplate === 'ModernTemplate' && !isEditing"
+    />
+    <CreativeTemplate
+      v-if="selectedTemplate === 'CreativeTemplate' && !isEditing"
+    />
+    <CustomTemplate
+      v-if="selectedTemplate === 'CustomTemplate' && !isEditing"
+    />
+
     <button
       v-if="selectedTemplate && !isEditing"
       @click="startEditing"
@@ -18,7 +30,7 @@
       :formSchema="formSchema"
       @form-submitted="onFormSubmitted"
     />
-    <resume-editor v-if="isEditing" @sections-updated="onSectionsUpdated" />
+    <resume-editor v-if="isEditing" @sections-updated="onSectionsUpdated" :templateType="selectedTemplate" />
     <pdf-exporter v-if="formData" :targetElementId="'resume-preview'" />
   </div>
 </template>
@@ -26,98 +38,75 @@
 <script>
 import TemplateGallery from "./TemplateGallery.vue";
 import DynamicForm from "./DynamicForm.vue";
-import LivePreview from "./LivePreview.vue";
 import ResumeEditor from "./ResumeEditor.vue";
 import PdfExporter from "./PdfExporter.vue";
+
+// Import Templates
+import ClassicTemplate from "../templates/ClassicTemplate.vue";
+import ModernTemplate from "../templates/ModernTemplate.vue";
+import CreativeTemplate from "../templates/CreativeTemplate.vue";
+import CustomTemplate from "../templates/CustomTemplate.vue";
+
+import { useTemplateStore } from "../../stores/templateStore";
 
 export default {
   name: "Resume",
   components: {
     TemplateGallery,
     DynamicForm,
-    LivePreview,
     ResumeEditor,
     PdfExporter,
+    ClassicTemplate,
+    ModernTemplate,
+    CreativeTemplate,
+    CustomTemplate,
   },
   data() {
     return {
       selectedTemplate: null,
       formSchema: [],
       formData: null,
-      resumeData: [],
       isEditing: false,
     };
   },
   methods: {
     onTemplateSelected(template) {
-      this.selectedTemplate = template;
-      this.formSchema = this.generateFormSchema(template);
-      this.resumeData = this.generateMockData(template);
+      console.log(
+        "this is template frol template galary: template-> ",
+        template.name
+      );
+
+      // Map template names to identifiers
+      const templateMap = {
+        "Classic Template": "ClassicTemplate",
+        "Modern Template": "ModernTemplate",
+        "Creative Template": "CreativeTemplate",
+        "Custom Template": "CustomTemplate",
+      };
+
+      // Set the selected template identifier based on the name
+      this.selectedTemplate = templateMap[template.name] || null;
+
+    //   if (this.selectedTemplate) {
+    //     this.formSchema = this.generateFormSchema();
+    //   } else {
+    //     console.error("Selected template not found");
+    //   }
     },
     onFormSubmitted(data) {
       this.formData = data;
-      this.resumeData = this.generateResumeData(data);
       this.isEditing = false;
     },
-    onSectionsUpdated(sections) {
-      this.resumeData = this.updateResumeSections(sections);
-    },
+    onSectionsUpdated(sections) {},
     startEditing() {
       this.isEditing = true;
+      const templateStore = useTemplateStore();
+      templateStore.setTemplate(this.selectedTemplate);
     },
-    generateFormSchema(template) {
-      // Generate form schema based on the selected template
+    generateFormSchema() {
       return [
-        {
-          name: "name",
-          label: "Name",
-          type: "text",
-          placeholder: "Enter your name",
-        },
-        {
-          name: "title",
-          label: "Title",
-          type: "text",
-          placeholder: "Enter your job title",
-        },
-        // Add more fields based on the template
+        // Define dynamic form schema
       ];
-    },
-    generateMockData(template) {
-      // Generate mock data for the selected template
-      return [
-        {
-          name: "Profile",
-          label: "Profile",
-          items: [
-            { id: 1, type: "text", value: "John Doe" },
-            { id: 2, type: "text", value: "Software Engineer" },
-          ],
-        },
-        // Add more sections with mock data
-      ];
-    },
-    generateResumeData(data) {
-      // Convert form data to resume data format
-      return [
-        {
-          name: "Profile",
-          label: "Profile",
-          items: [
-            { id: 1, type: "text", value: data.name },
-            { id: 2, type: "text", value: data.title },
-          ],
-        },
-        // Add more sections based on the form data
-      ];
-    },
-    updateResumeSections(sections) {
-      // Update resume data based on the reordered sections
-      return sections.map((section) => ({
-        ...section,
-        items:
-          this.resumeData.find((s) => s.name === section.label)?.items || [],
-      }));
     },
   },
 };

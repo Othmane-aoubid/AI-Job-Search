@@ -31,6 +31,15 @@
             <li v-for="skill in mockData.skills" :key="skill">{{ skill }}</li>
           </ul>
         </section>
+        <section>
+          <h3 class="text-lg font-semibold">Projects</h3>
+          <ul>
+            <li v-for="project in mockData.projects" :key="project.id">
+              <strong>{{ project.name }}</strong
+              >: {{ project.description }}
+            </li>
+          </ul>
+        </section>
       </div>
       <div v-if="selectedTemplate.id === 2" class="modern-template">
         <h1 class="text-3xl font-bold text-blue-600">{{ mockData.name }}</h1>
@@ -123,6 +132,18 @@ export default {
           { id: 1, position: "Senior Developer", company: "Tech Corp" },
         ],
         skills: ["JavaScript", "Vue.js", "Node.js"],
+        projects: [
+          {
+            id: 1,
+            name: "Project Alpha",
+            description: "A web application for managing tasks.",
+          },
+          {
+            id: 2,
+            name: "Project Beta",
+            description: "A mobile app for tracking fitness activities.",
+          },
+        ],
       },
     };
   },
@@ -135,12 +156,32 @@ export default {
   border-left: 1px solid #e5e7eb;
 }
 .resume-preview {
-  background-color: #f9fafb;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: auto;
 }
 .classic-template {
   font-family: serif;
+}
+.classic-template h1 {
+  color: #2c3e50;
+  border-bottom: 2px solid #e74c3c;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+.classic-template h2 {
+  color: #34495e;
+  margin-bottom: 15px;
+}
+.classic-template section {
+  margin-bottom: 20px;
+}
+.classic-template h3 {
+  color: #e74c3c;
+  margin-bottom: 10px;
 }
 .modern-template {
   font-family: sans-serif;

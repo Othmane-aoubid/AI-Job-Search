@@ -7,11 +7,11 @@
         :key="template.id"
         class="template-card"
       >
-        <img
+        <!-- <img
           :src="template.image"
           :alt="template.name"
           class="w-full h-48 object-cover mb-2"
-        />
+        /> -->
         <h3 class="text-lg font-semibold">{{ template.name }}</h3>
         <button
           @click="selectTemplate(template)"
@@ -25,23 +25,47 @@
 </template>
 
 <script>
-import classicTemplateImage from "../../assets/vue.svg";
-import modernTemplateImage from "../../assets/vue.svg";
-import creativeTemplateImage from "../../assets/vue.svg";
+// import classicTemplateImage from "./../assets/vue.svg";
+// import modernTemplateImage from "./../assets/vue.svg";
+// import creativeTemplateImage from "./../assets/vue.svg";
+
+// Import Templates
+import ClassicTemplate from "../templates/ClassicTemplate.vue";
+import ModernTemplate from "../templates/ModernTemplate.vue";
+import CreativeTemplate from "../templates/CreativeTemplate.vue";
+import CustomTemplate from "../templates/CustomTemplate.vue";
 
 export default {
   name: "TemplateGallery",
   data() {
     return {
       templates: [
-        { id: 1, name: "Classic Template", image: classicTemplateImage },
-        { id: 2, name: "Modern Template", image: modernTemplateImage },
-        { id: 3, name: "Creative Template", image: creativeTemplateImage },
+        {
+          id: 1,
+          name: "Classic Template",
+          component: ClassicTemplate,
+        },
+        {
+          id: 2,
+          name: "Modern Template",
+          component: ModernTemplate,
+        },
+        {
+          id: 3,
+          name: "Creative Template",
+          component: CreativeTemplate,
+        },
+        {
+          id: 4,
+          name: "Custom Template", // Replace with a custom template image
+          component: CustomTemplate,
+        },
       ],
     };
   },
   methods: {
     selectTemplate(template) {
+      // Emit the selected template's component to the parent
       this.$emit("template-selected", template);
     },
   },
@@ -57,8 +81,13 @@ export default {
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.2s;
+  background-color: #ffffff;
+  text-align: center;
 }
 .template-card:hover {
   transform: scale(1.05);
+}
+img {
+  border-bottom: 1px solid #e5e7eb;
 }
 </style>
