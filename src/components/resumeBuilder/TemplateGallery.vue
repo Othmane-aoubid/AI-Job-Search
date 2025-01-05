@@ -7,15 +7,15 @@
         :key="template.id"
         class="template-card"
       >
-        <!-- <img
+        <img
           :src="template.image"
           :alt="template.name"
-          class="w-full h-48 object-cover mb-2"
-        /> -->
+          class="h-auto max-w-full rounded-lg"
+        />
         <h3 class="text-lg font-semibold">{{ template.name }}</h3>
         <button
           @click="selectTemplate(template)"
-          class="mt-2 bg-blue-500 text-white py-1 px-4 rounded"
+          class="mt-2 bg-blue-500 text-white py-1 px-4 rounded mb-2"
         >
           Select
         </button>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-// import classicTemplateImage from "./../assets/vue.svg";
+import classic from "../../assets/resume_image.png";
 // import modernTemplateImage from "./../assets/vue.svg";
 // import creativeTemplateImage from "./../assets/vue.svg";
 
@@ -43,21 +43,25 @@ export default {
         {
           id: 1,
           name: "Classic Template",
+          image: classic,
           component: ClassicTemplate,
         },
         {
           id: 2,
           name: "Modern Template",
+          image: classic,
           component: ModernTemplate,
         },
         {
           id: 3,
           name: "Creative Template",
+          image: classic,
           component: CreativeTemplate,
         },
         {
           id: 4,
           name: "Custom Template", // Replace with a custom template image
+          image: classic,
           component: CustomTemplate,
         },
       ],

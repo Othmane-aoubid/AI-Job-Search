@@ -1,7 +1,7 @@
 <template>
   <div class="resume-builder">
     <template-gallery
-      v-if="!isEditing"
+      v-if=" !hideTemplateGalary && !isEditing"
       @template-selected="onTemplateSelected"
     />
 
@@ -67,6 +67,7 @@ export default {
       formSchema: [],
       formData: null,
       isEditing: false,
+      hideTemplateGalary:false,
     };
   },
   methods: {
@@ -86,6 +87,7 @@ export default {
 
       // Set the selected template identifier based on the name
       this.selectedTemplate = templateMap[template.name] || null;
+      this.hideTemplateGalary = true
 
     //   if (this.selectedTemplate) {
     //     this.formSchema = this.generateFormSchema();
