@@ -1,14 +1,22 @@
-import { ref } from 'vue';
-import { 
-  signInWithEmailAndPassword, 
+import { ref, onMounted } from "vue";
+import {
+  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut
-} from 'firebase/auth';
-import { auth } from '../firebase/config';
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "../firebase/config";
 
 export function useAuth() {
   const error = ref(null);
   const isPending = ref(false);
+  const user = ref(null);
+
+  onMounted(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      user.value = currentUser;
+    });
+  });
 
   async function login(email, password) {
     error.value = null;
@@ -28,7 +36,11 @@ export function useAuth() {
     error.value = null;
     isPending.value = true;
     try {
-      const response = await createUserWithEmailAndPassword(auth, email, password);
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       return response;
     } catch (err) {
       error.value = err.message;
@@ -51,11 +63,10 @@ export function useAuth() {
     }
   }
 
- 
-
   return {
     error,
     isPending,
+    user,
     login,
     register,
     logout,
